@@ -74,6 +74,7 @@
             return {
                 cleaningsIntervalId: '',
                 changePageIntervalId: '',
+                changeElapsedSecondsIntervalId: '',
                 page: 1,
                 elapsedSeconds: 0,
                 today: new Date(),
@@ -86,9 +87,7 @@
             this.loadCleanings()
             this.cleaningsIntervalId = setInterval(this.loadCleanings, 30000)
             this.changePageIntervalId = setInterval(this.updateCurrentPage, 5000);
-            setInterval(() => {
-                this.elapsedSeconds = this.elapsedSeconds + 1
-            }, 1000);
+            this.changeElapsedSecondsIntervalId = setInterval(this.incrementElapsedSeconds, 1000);
         },
         computed: {
             ...mapState({
@@ -126,6 +125,7 @@
         beforeDestroy () {
             clearInterval(this.cleaningsIntervalId);
             clearInterval(this.changePageIntervalId);
+            clearInterval(this.changeElapsedSecondsIntervalId);
         },
         methods: {
             updateCurrentPage() {
@@ -134,6 +134,9 @@
                 } else {
                     this.page = 1;
                 }
+            },
+            incrementElapsedSeconds() {
+                this.elapsedSeconds = this.elapsedSeconds + 1
             },
             pad(num) {
                 return ("0"+num).slice(-2);
